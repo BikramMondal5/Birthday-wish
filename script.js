@@ -171,21 +171,52 @@ function initSpaceBackground() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById('scene-container').appendChild(renderer.domElement);
 
+    // Create a circular texture for stars
+    const starTexture = createCircleTexture();
+    
     // Create stars
     const starsGeometry = new THREE.BufferGeometry();
     const starsMaterial = new THREE.PointsMaterial({
         color: 0xffffff,
         size: 0.7,
-        transparent: true
+        transparent: true,
+        map: starTexture,
+        alphaTest: 0.5 // Discard pixels with alpha < 0.5
     });
 
+    // Create multiple star layers for a denser effect
     const starsVertices = [];
-    for (let i = 0; i < 10000; i++) {
+    
+    // First layer - dense inner stars (100,000)
+    for (let i = 0; i < 100000; i++) {
         const x = (Math.random() - 0.5) * 2000;
         const y = (Math.random() - 0.5) * 2000;
         const z = (Math.random() - 0.5) * 2000;
         starsVertices.push(x, y, z);
     }
+    
+    // Second layer - closer stars with varied sizes
+    const closerStarsGeometry = new THREE.BufferGeometry();
+    const closerStarsVertices = [];
+    
+    for (let i = 0; i < 5000; i++) {
+        const x = (Math.random() - 0.5) * 500;
+        const y = (Math.random() - 0.5) * 500;
+        const z = (Math.random() - 0.5) * 500;
+        closerStarsVertices.push(x, y, z);
+    }
+    
+    closerStarsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(closerStarsVertices, 3));
+    const closerStarsMaterial = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 1.2,
+        transparent: true,
+        map: starTexture,
+        alphaTest: 0.5
+    });
+    
+    const closerStars = new THREE.Points(closerStarsGeometry, closerStarsMaterial);
+    scene.add(closerStars);
 
     starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
     const stars = new THREE.Points(starsGeometry, starsMaterial);
@@ -202,7 +233,9 @@ function initSpaceBackground() {
             size: 3,
             transparent: true,
             opacity: 0.3,
-            blending: THREE.AdditiveBlending
+            blending: THREE.AdditiveBlending,
+            map: starTexture, // Use the same circular texture for nebulae
+            alphaTest: 0.2
         });
 
         const nebulaVertices = [];
@@ -244,6 +277,10 @@ function initSpaceBackground() {
         // Rotate stars slowly
         stars.rotation.x += 0.0001;
         stars.rotation.y += 0.0002;
+        
+        // Rotate closer stars at a slightly different rate
+        closerStars.rotation.x += 0.00015;
+        closerStars.rotation.y += 0.00025;
 
         // Animate nebulae
         nebulae.forEach((nebula, index) => {
@@ -285,6 +322,34 @@ function initSpaceBackground() {
 
     // Start animation
     animate();
+}
+
+// Function to create a circular texture for stars
+function createCircleTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 32;
+    canvas.height = 32;
+    
+    const context = canvas.getContext('2d');
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = canvas.width / 3;
+    
+    // Draw white circle with soft edges
+    const gradient = context.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+    gradient.addColorStop(0.8, 'rgba(255, 255, 255, 0.5)');
+    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    
+    context.fillStyle = gradient;
+    context.beginPath();
+    context.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    context.fill();
+    
+    // Create texture from canvas
+    const texture = new THREE.Texture(canvas);
+    texture.needsUpdate = true;
+    return texture;
 }
 
 // Function to initialize balloon (replaces the old createHeartTree function)
