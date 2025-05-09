@@ -22,8 +22,9 @@ The project is organized into the following structure:
    - Email: codesnippets45@gmail.com
    - Date of Birth: 25/12/2004
 3. 📅 Enter the special code: `11371137`
-4. 🎈 Click the balloon **three times** to pop it and reveal the birthday wishes 🎊
-5. 💝 Enjoy the photo gallery and warm birthday wishes! 🥰
+4. 👨‍🚀 Navigate to a web page highlighted Universe
+5. 🎈 Click the balloon **three times** to pop it and reveal the birthday wishes 🎊
+6. 💝 Enjoy the photo gallery and warm birthday wishes! 🥰
 
 ## ✨ Special Features
 
