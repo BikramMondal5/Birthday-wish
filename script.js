@@ -553,6 +553,9 @@ function createBalloon() {
     tie.position.y = -1.1;
     tie.rotation.x = Math.PI; // Flip to point down
     balloon.add(tie);
+    
+    // Add "Tap me" text
+    createTapMeText();
 
     // Create rope
     createRope();
@@ -578,6 +581,12 @@ function createBalloon() {
             // Pop balloon after third click
             if (clickCount >= 3) {
                 popBalloon();
+                
+                // Remove tap me text if it exists
+                const tapMeText = document.getElementById('tap-me-text');
+                if (tapMeText) {
+                    document.body.removeChild(tapMeText);
+                }
             }
         }
     });
@@ -1006,4 +1015,46 @@ function showPhotoGallery() {
         const music = document.getElementById('background-music');
         music.pause();
     });
+}
+
+// Function to create "Tap me" text
+function createTapMeText() {
+    const tapMeText = document.createElement('div');
+    tapMeText.id = 'tap-me-text';
+    tapMeText.textContent = 'Tap me';
+    
+    // Style the text to look like it's written on the balloon
+    tapMeText.style.position = 'fixed';
+    tapMeText.style.top = '40%';
+    tapMeText.style.left = '50%';
+    tapMeText.style.transform = 'translate(-50%, -50%)';
+    tapMeText.style.color = '#ffffff'; // Changed to white for better contrast
+    tapMeText.style.fontSize = '2.2rem'; // Increased size
+    tapMeText.style.fontWeight = 'bold';
+    tapMeText.style.textShadow = '1px 1px 2px rgba(0, 0, 0, 0.7)'; // Slightly darker shadow for white text
+    tapMeText.style.zIndex = '100';
+    tapMeText.style.pointerEvents = 'none'; // Make sure it doesn't interfere with clicks
+    tapMeText.style.fontFamily = 'Arial, sans-serif';
+    
+    document.body.appendChild(tapMeText);
+    
+    // Update text position to follow balloon
+    function updateTextPosition() {
+        if (balloon && balloonMesh.visible) {
+            // Get balloon position in screen coordinates
+            const vector = new THREE.Vector3();
+            vector.setFromMatrixPosition(balloon.matrixWorld);
+            vector.project(camera);
+            
+            const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
+            const y = (-(vector.y * 0.5) + 0.5) * window.innerHeight; // Position text on the balloon
+            
+            tapMeText.style.top = `${y}px`;
+            tapMeText.style.left = `${x}px`;
+        }
+        
+        requestAnimationFrame(updateTextPosition);
+    }
+    
+    updateTextPosition();
 }
