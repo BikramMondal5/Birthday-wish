@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("Unlock attempted with code:", secretCode);
 
             // Check if the secret code is correct
-            if (secretCode === '15102024') {
+            if (secretCode === '11371137') {
                 secretError.style.display = 'none';
                 document.getElementById('secret-page').classList.add('hidden');
 

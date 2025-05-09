@@ -17,14 +17,17 @@ The project is organized into the following structure:
 ## 🚀 How to Use
 
 1. 🖥️ Open `index.html` in your browser
-2. 👩‍💻 Sign up with the specific credentials (Bristi's information)
-3. 📅 Enter the special date code
+2. 👩‍💻 Sign up with the specific credentials:
+   - Name: Bikram Mondal
+   - Email: codesnippets45@gmail.com
+   - Date of Birth: 25/12/2004
+3. 📅 Enter the special code: `11371137`
 4. 🎈 Click the balloon **three times** to pop it and reveal the birthday wishes 🎊
 5. 💝 Enjoy the photo gallery and warm birthday wishes! 🥰
 
 ## ✨ Special Features
 
-- 🗓️ Scheduled birthday notifications on **May 12th**
+- 🗓️ Scheduled birthday notifications
 - 🧊 Interactive 3D balloon
 - 🖼️ Photo gallery with sweet memories
 - 🎼 Background music to set the mood
