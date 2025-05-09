@@ -174,53 +174,107 @@ function initSpaceBackground() {
     // Create a circular texture for stars
     const starTexture = createCircleTexture();
     
-    // Create stars
+    // Layer 1 - Ultra dense background stars (200,000)
     const starsGeometry = new THREE.BufferGeometry();
-    const starsMaterial = new THREE.PointsMaterial({
-        color: 0xffffff,
-        size: 0.7,
-        transparent: true,
-        map: starTexture,
-        alphaTest: 0.5 // Discard pixels with alpha < 0.5
-    });
-
-    // Create multiple star layers for a denser effect
     const starsVertices = [];
+    const starsColors = [];
     
-    // First layer - dense inner stars (100,000)
-    for (let i = 0; i < 100000; i++) {
+    for (let i = 0; i < 200000; i++) {
         const x = (Math.random() - 0.5) * 2000;
         const y = (Math.random() - 0.5) * 2000;
         const z = (Math.random() - 0.5) * 2000;
         starsVertices.push(x, y, z);
+        
+        // Add realistic star color
+        const color = getStarColor();
+        starsColors.push(color.r, color.g, color.b);
     }
     
-    // Second layer - closer stars with varied sizes
+    starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
+    starsGeometry.setAttribute('color', new THREE.Float32BufferAttribute(starsColors, 3));
+    
+    const starsMaterial = new THREE.PointsMaterial({
+        size: 0.25,
+        transparent: true,
+        opacity: 0.7, // Slightly reduced opacity
+        vertexColors: true, // Use colors from vertices
+        map: starTexture,
+        alphaTest: 0.5
+    });
+    
+    const stars = new THREE.Points(starsGeometry, starsMaterial);
+    scene.add(stars);
+    
+    // Layer 2 - Mid-distance stars (15,000)
     const closerStarsGeometry = new THREE.BufferGeometry();
     const closerStarsVertices = [];
+    const closerStarsColors = [];
     
-    for (let i = 0; i < 5000; i++) {
+    for (let i = 0; i < 15000; i++) {
         const x = (Math.random() - 0.5) * 500;
         const y = (Math.random() - 0.5) * 500;
         const z = (Math.random() - 0.5) * 500;
         closerStarsVertices.push(x, y, z);
+        
+        // Add realistic star color
+        const color = getStarColor();
+        closerStarsColors.push(color.r, color.g, color.b);
     }
     
     closerStarsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(closerStarsVertices, 3));
+    closerStarsGeometry.setAttribute('color', new THREE.Float32BufferAttribute(closerStarsColors, 3));
+    
     const closerStarsMaterial = new THREE.PointsMaterial({
-        color: 0xffffff,
-        size: 1.2,
+        size: 0.4,
         transparent: true,
+        opacity: 0.8,
+        vertexColors: true,
         map: starTexture,
         alphaTest: 0.5
     });
     
     const closerStars = new THREE.Points(closerStarsGeometry, closerStarsMaterial);
     scene.add(closerStars);
-
-    starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
-    const stars = new THREE.Points(starsGeometry, starsMaterial);
-    scene.add(stars);
+    
+    // Layer 3 - Very close bright stars (2,000)
+    const brightStarsGeometry = new THREE.BufferGeometry();
+    const brightStarsVertices = [];
+    const brightStarsColors = [];
+    
+    for (let i = 0; i < 2000; i++) {
+        const x = (Math.random() - 0.5) * 200;
+        const y = (Math.random() - 0.5) * 200;
+        const z = (Math.random() - 0.5) * 200;
+        brightStarsVertices.push(x, y, z);
+        
+        // Brighter stars are more likely to be blue or white
+        const rand = Math.random();
+        let color;
+        if (rand < 0.4) {
+            color = new THREE.Color(0xCCDBFF); // Blue-white
+        } else if (rand < 0.8) {
+            color = new THREE.Color(0xF8F7FF); // White
+        } else {
+            color = getStarColor(); // Random realistic color
+        }
+        
+        brightStarsColors.push(color.r, color.g, color.b);
+    }
+    
+    brightStarsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(brightStarsVertices, 3));
+    brightStarsGeometry.setAttribute('color', new THREE.Float32BufferAttribute(brightStarsColors, 3));
+    
+    const brightStarsMaterial = new THREE.PointsMaterial({
+        size: 0.6,
+        transparent: true,
+        opacity: 0.9,
+        vertexColors: true,
+        map: starTexture,
+        alphaTest: 0.5
+    });
+    
+    const brightStars = new THREE.Points(brightStarsGeometry, brightStarsMaterial);
+    scene.add(brightStars);
 
     // Add colored nebulae (particle systems)
     const nebulaColors = [0xff9a9e, 0xfad0c4, 0xffecd2, 0xfcb69f, 0xa18cd1, 0xfbc2eb];
@@ -270,17 +324,80 @@ function initSpaceBackground() {
     // Position camera
     camera.position.z = 5;
 
+    // Store initial positions and velocities for stars
+    const starVelocities = [];
+    for (let i = 0; i < starsVertices.length / 3; i++) {
+        // Much smaller random velocity for each star
+        starVelocities.push(
+            (Math.random() - 0.5) * 0.01,
+            (Math.random() - 0.5) * 0.01,
+            (Math.random() - 0.5) * 0.01
+        );
+    }
+    
+    const closerStarVelocities = [];
+    for (let i = 0; i < closerStarsVertices.length / 3; i++) {
+        closerStarVelocities.push(
+            (Math.random() - 0.5) * 0.015,
+            (Math.random() - 0.5) * 0.015,
+            (Math.random() - 0.5) * 0.015
+        );
+    }
+    
+    const brightStarVelocities = [];
+    for (let i = 0; i < brightStarsVertices.length / 3; i++) {
+        brightStarVelocities.push(
+            (Math.random() - 0.5) * 0.02,
+            (Math.random() - 0.5) * 0.02,
+            (Math.random() - 0.5) * 0.02
+        );
+    }
+    
     // Animation function
     function animate() {
         requestAnimationFrame(animate);
-
-        // Rotate stars slowly
-        stars.rotation.x += 0.0001;
-        stars.rotation.y += 0.0002;
         
-        // Rotate closer stars at a slightly different rate
-        closerStars.rotation.x += 0.00015;
-        closerStars.rotation.y += 0.00025;
+        // Update star positions with random movement
+        const starsPositions = stars.geometry.attributes.position.array;
+        for (let i = 0; i < starsPositions.length; i += 3) {
+            starsPositions[i] += starVelocities[i/3 * 3];
+            starsPositions[i+1] += starVelocities[i/3 * 3 + 1];
+            starsPositions[i+2] += starVelocities[i/3 * 3 + 2];
+            
+            // Boundary check - if star goes too far, bring it back to the other side
+            if (Math.abs(starsPositions[i]) > 1000) starVelocities[i/3 * 3] *= -1;
+            if (Math.abs(starsPositions[i+1]) > 1000) starVelocities[i/3 * 3 + 1] *= -1;
+            if (Math.abs(starsPositions[i+2]) > 1000) starVelocities[i/3 * 3 + 2] *= -1;
+        }
+        stars.geometry.attributes.position.needsUpdate = true;
+        
+        // Update closer stars positions
+        const closerStarsPositions = closerStars.geometry.attributes.position.array;
+        for (let i = 0; i < closerStarsPositions.length; i += 3) {
+            closerStarsPositions[i] += closerStarVelocities[i/3 * 3];
+            closerStarsPositions[i+1] += closerStarVelocities[i/3 * 3 + 1];
+            closerStarsPositions[i+2] += closerStarVelocities[i/3 * 3 + 2];
+            
+            // Boundary check
+            if (Math.abs(closerStarsPositions[i]) > 250) closerStarVelocities[i/3 * 3] *= -1;
+            if (Math.abs(closerStarsPositions[i+1]) > 250) closerStarVelocities[i/3 * 3 + 1] *= -1;
+            if (Math.abs(closerStarsPositions[i+2]) > 250) closerStarVelocities[i/3 * 3 + 2] *= -1;
+        }
+        closerStars.geometry.attributes.position.needsUpdate = true;
+        
+        // Update bright stars positions
+        const brightStarsPositions = brightStars.geometry.attributes.position.array;
+        for (let i = 0; i < brightStarsPositions.length; i += 3) {
+            brightStarsPositions[i] += brightStarVelocities[i/3 * 3];
+            brightStarsPositions[i+1] += brightStarVelocities[i/3 * 3 + 1];
+            brightStarsPositions[i+2] += brightStarVelocities[i/3 * 3 + 2];
+            
+            // Boundary check
+            if (Math.abs(brightStarsPositions[i]) > 100) brightStarVelocities[i/3 * 3] *= -1;
+            if (Math.abs(brightStarsPositions[i+1]) > 100) brightStarVelocities[i/3 * 3 + 1] *= -1;
+            if (Math.abs(brightStarsPositions[i+2]) > 100) brightStarVelocities[i/3 * 3 + 2] *= -1;
+        }
+        brightStars.geometry.attributes.position.needsUpdate = true;
 
         // Animate nebulae
         nebulae.forEach((nebula, index) => {
@@ -352,6 +469,37 @@ function createCircleTexture() {
     return texture;
 }
 
+// Function to generate realistic star colors
+function getStarColor() {
+    // Star color distribution based on stellar classification
+    const colorTypes = [
+        {color: new THREE.Color(0xCCDBFF), weight: 0.25}, // Blue-white (O, B stars)
+        {color: new THREE.Color(0xF8F7FF), weight: 0.35}, // White (A stars)
+        {color: new THREE.Color(0xFFF4EA), weight: 0.25}, // Yellow-white (F, G stars)
+        {color: new THREE.Color(0xFFD2A1), weight: 0.10}, // Orange-red (K stars)
+        {color: new THREE.Color(0xFFCCCC), weight: 0.05}  // Red (M stars)
+    ];
+    
+    // Generate a random number to select color based on weight distribution
+    const rand = Math.random();
+    let cumulativeWeight = 0;
+    
+    for (const type of colorTypes) {
+        cumulativeWeight += type.weight;
+        if (rand <= cumulativeWeight) {
+            // Add slight random variation to the selected color
+            const color = type.color.clone();
+            color.r += (Math.random() - 0.5) * 0.1;
+            color.g += (Math.random() - 0.5) * 0.1;
+            color.b += (Math.random() - 0.5) * 0.1;
+            return color;
+        }
+    }
+    
+    // Default fallback
+    return new THREE.Color(0xFFFFFF);
+}
+
 // Function to initialize balloon (replaces the old createHeartTree function)
 function initBalloon() {
     // Only initialize if balloon hasn't been initialized yet
@@ -382,16 +530,21 @@ function createBalloon() {
     const balloonGeometry = new THREE.SphereGeometry(1, 32, 32);
     // Give the balloon a shiny material with slight transparency
     const balloonMaterial = new THREE.MeshPhongMaterial({
-        color: 0xff5555, // Changed back to red from yellow
-        shininess: 100,
+        color: 0xff3333, // Brighter red
+        shininess: 150, // Increased shininess
         specular: 0xffffff,
-        emissive: 0x220000, // Changed back to original emissive for red balloon
+        emissive: 0x330000, // Increased emissive intensity
         transparent: true,
-        opacity: 0.9
+        opacity: 0.95 // Increased opacity
     });
 
+    // Add a point light inside the balloon to make it glow
+    const balloonLight = new THREE.PointLight(0xff5555, 1, 10);
+    balloonLight.position.set(0, 0, 0);
+    
     balloonMesh = new THREE.Mesh(balloonGeometry, balloonMaterial);
     balloon.add(balloonMesh);
+    balloon.add(balloonLight);
 
     // Create balloon tie
     const tieGeometry = new THREE.ConeGeometry(0.15, 0.5, 16);
