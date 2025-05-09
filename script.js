@@ -174,12 +174,12 @@ function initSpaceBackground() {
     // Create a circular texture for stars
     const starTexture = createCircleTexture();
     
-    // Layer 1 - Ultra dense background stars (300,000)
+    // Layer 1 - Ultra dense background stars (500,000)
     const starsGeometry = new THREE.BufferGeometry();
     const starsVertices = [];
     const starsColors = [];
     
-    for (let i = 0; i < 300000; i++) {
+    for (let i = 0; i < 500000; i++) {
         const x = (Math.random() - 0.5) * 2000;
         const y = (Math.random() - 0.5) * 2000;
         const z = (Math.random() - 0.5) * 2000;
@@ -205,12 +205,12 @@ function initSpaceBackground() {
     const stars = new THREE.Points(starsGeometry, starsMaterial);
     scene.add(stars);
     
-    // Layer 2 - Mid-distance stars (25,000)
+    // Layer 2 - Mid-distance stars (50,000)
     const closerStarsGeometry = new THREE.BufferGeometry();
     const closerStarsVertices = [];
     const closerStarsColors = [];
     
-    for (let i = 0; i < 25000; i++) {
+    for (let i = 0; i < 50000; i++) {
         const x = (Math.random() - 0.5) * 500;
         const y = (Math.random() - 0.5) * 500;
         const z = (Math.random() - 0.5) * 500;
@@ -236,12 +236,12 @@ function initSpaceBackground() {
     const closerStars = new THREE.Points(closerStarsGeometry, closerStarsMaterial);
     scene.add(closerStars);
     
-    // Layer 3 - Very close bright stars (3,500)
+    // Layer 3 - Very close bright stars (8,000)
     const brightStarsGeometry = new THREE.BufferGeometry();
     const brightStarsVertices = [];
     const brightStarsColors = [];
     
-    for (let i = 0; i < 3500; i++) {
+    for (let i = 0; i < 8000; i++) {
         const x = (Math.random() - 0.5) * 200;
         const y = (Math.random() - 0.5) * 200;
         const z = (Math.random() - 0.5) * 200;
@@ -326,7 +326,7 @@ function initSpaceBackground() {
 
     // Store initial positions and velocities for stars
     const starVelocities = [];
-    for (let i = 0; i < 300000; i++) {
+    for (let i = 0; i < 500000; i++) {
         // Much smaller random velocity for each star
         starVelocities.push(
             (Math.random() - 0.5) * 0.01,
@@ -336,7 +336,7 @@ function initSpaceBackground() {
     }
     
     const closerStarVelocities = [];
-    for (let i = 0; i < 25000; i++) {
+    for (let i = 0; i < 50000; i++) {
         closerStarVelocities.push(
             (Math.random() - 0.5) * 0.015,
             (Math.random() - 0.5) * 0.015,
@@ -345,7 +345,7 @@ function initSpaceBackground() {
     }
     
     const brightStarVelocities = [];
-    for (let i = 0; i < 3500; i++) {
+    for (let i = 0; i < 8000; i++) {
         brightStarVelocities.push(
             (Math.random() - 0.5) * 0.02,
             (Math.random() - 0.5) * 0.02,
