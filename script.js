@@ -65,12 +65,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
             console.log("Form submitted with:", name, email, day, month, year);
 
-            // Check if the inputs match Bristi's info
-            if (name.toLowerCase() === 'bristi santra' &&
-                email.toLowerCase() === 'bristisantra052006@gmail.com' &&
-                day === '12' &&
-                month === '05' &&
-                year === '2006') {
+            // Check if the inputs match Bikram's info
+            if (name.toLowerCase() === 'bikram mondal' &&
+                email.toLowerCase() === 'codesnippets45@gmail.com' &&
+                day === '25' &&
+                month === '12' &&
+                year === '2004') {
                 // Navigate to secret page
                 document.getElementById('signup-page').classList.add('hidden');
                 document.getElementById('secret-page').classList.remove('hidden');
@@ -544,7 +544,7 @@ function popBalloon() {
 function showGreetingEffect() {
     // Create a floating message that appears
     const messages = [
-        "Happy Birthday Bristi! 🎂",
+        "Happy Birthday Bikram! 🎂",
         "May all your wishes come true! ✨",
         "Have a wonderful day! 🎉",
         "Enjoy your special day! 💖"

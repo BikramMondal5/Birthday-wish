@@ -1,4 +1,4 @@
-# 🎉 Birthday Wish Portal 🎂🎈
+# 🎉 Birthday Wish Template 🎂🎈
 
 A special interactive birthday wish portal created with 💖 and a sprinkle of magic ✨.
 
