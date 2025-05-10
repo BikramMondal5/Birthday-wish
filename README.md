@@ -2,6 +2,22 @@
 
 A special interactive birthday wish template created with 💖 and a sprinkle of magic ✨
 
+## ✨ Features
+
+- 🗓️ Scheduled birthday notifications
+- 🧊 Interactive 3D balloon
+- 🖼️ Photo gallery with sweet memories
+- 🎼 Background music to set the mood
+- 🎉 Confetti and particle effects for celebration
+- 📱 Progressive Web App support for mobile devices
+
+## 🛠️ Technical Details
+
+This website uses:
+- 🌀 **Three.js** for 3D effects
+- ⚡ **GSAP** for stunning animations
+- 🧾 **Service Workers** for real-time notifications and offline capabilities
+
 ## 🛠️ Installation
 
 Follow these steps to set up and run the Birthday Wish Template:
@@ -42,22 +58,6 @@ The project is organized into the following structure:
 5. 🎈 Click the balloon **three times** to pop it and reveal the birthday wishes 🎊
 6. 💝 Enjoy the photo gallery and warm birthday wishes! 🥰
 
-## ✨ Special Features
-
-- 🗓️ Scheduled birthday notifications
-- 🧊 Interactive 3D balloon
-- 🖼️ Photo gallery with sweet memories
-- 🎼 Background music to set the mood
-- 🎉 Confetti and particle effects for celebration
-- 📱 Progressive Web App support for mobile devices
-
-## 🛠️ Technical Details
-
-This website uses:
-- 🌀 **Three.js** for 3D effects
-- ⚡ **GSAP** for stunning animations
-- 🧾 **Service Workers** for real-time notifications and offline capabilities
-
 ## 📝 Note
 
 This is a **personal birthday project**. All images and special dates are unique to the recipient 💌.
@@ -70,3 +70,7 @@ To update the gallery:
 
 To change the background music:
 1. Replace the `music.mp3` file in the `music/` directory
+
+## 📜 License
+
+This project is licensed under the `MIT License`.
