@@ -2,6 +2,22 @@
 
 A special interactive birthday wish template created with 💖 and a sprinkle of magic ✨
 
+## 🛠️ Installation
+
+Follow these steps to set up and run the Birthday Wish Template:
+
+1. **Download or Clone the Repository**
+   - Clone the repository:
+     ```
+     git clone https://github.com/BikramMondal5/Birthday-wish.git
+     ```
+2. **Open the Project Folder**
+   - Navigate to the extracted or cloned folder (`Birthday-wish`).
+3. **Launch the Application**
+   - Double-click `index.html` or right-click and choose "Open with" your preferred web browser (Chrome, Firefox, Edge, etc.).
+
+> **No installation of Node.js, npm, or any dependencies is required. All libraries are loaded via CDN.**
+
 ## 📁 Project Structure
 
 The project is organized into the following structure:
